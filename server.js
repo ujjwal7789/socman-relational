@@ -4,6 +4,8 @@ require('dotenv').config();
 
 const {sequelize, connectDB} = require('./config/database');
 
+const authRoutes = require('./routes/auth.routes'); 
+
 const app = express();
 
 //Middleware
@@ -15,6 +17,8 @@ connectDB();
 app.get('/', (req, res) => {
     res.send('Society Management API is running!');
 });
+
+app.use('/api/auth', authRoutes);
 
 //Define the port to run on, from environment variables or a default
 const PORT = process.env.PORT || 3001;
