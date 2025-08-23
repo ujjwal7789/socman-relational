@@ -16,7 +16,7 @@ const Apartment = sequelize.define('Apartment', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    ownder_id: {
+    owner_id: {
         type: DataTypes.INTEGER,
         allowNull: true, //An apartment may be unassigned initially
     },

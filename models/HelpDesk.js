@@ -35,8 +35,6 @@ const HelpDesk = sequelize.define('HelpDesk', {
 }, {
   tableName: 'help_desk',
   timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
 });
 
 module.exports = HelpDesk;
