@@ -26,7 +26,6 @@ const ForumComment = sequelize.define('ForumComment', {
 }, {
     tableName: 'forum_comments',
     timestamps: true,
-    createdAt: 'created_at',
     updatedAt: false,     
 });
 

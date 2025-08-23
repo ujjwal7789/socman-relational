@@ -25,7 +25,6 @@ const ForumPost = sequelize.define('ForumPost', {
 }, {
     tableName: 'forum_posts',
     timestamps: true,
-    createdAt: 'created_at',
     updatedAt: false, 
 })
 

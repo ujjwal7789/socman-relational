@@ -26,7 +26,6 @@ const Alert = sequelize.define('Alert', {
 }, {
   tableName: 'alerts',
   timestamps: true,
-  createdAt: 'created_at',
   updatedAt: false,
 });
 

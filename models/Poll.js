@@ -25,7 +25,6 @@ const Poll = sequelize.define('Poll', {
 }, {
     tableName: 'polls',
     timestamps: true,
-    createdAt: 'created_at',
     updatedAt: false, 
 });
 

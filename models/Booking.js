@@ -31,7 +31,6 @@ const Booking = sequelize.define('Booking', {
 }, {
   tableName: 'bookings',
   timestamps: true,
-  createdAt: 'created_at',
   updatedAt: false,
 });
 

@@ -35,8 +35,6 @@ const Visitor = sequelize.define('Visitor', {
 }, {
   tableName: 'visitors',
   timestamps: true,
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
 });
 
 module.exports = Visitor;
