@@ -6,7 +6,7 @@ const {sequelize, connectDB} = require('./config/database');
 
 const authRoutes = require('./routes/auth.routes'); 
 const noticeRoutes = require('./routes/notice.routes');
-
+const helpDeskRoutes = require('./routes/helpdesk.routes');
 const app = express();
 
 //Middleware
@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/notices', noticeRoutes);
+app.use('/api/helpdesk', helpDeskRoutes);
 
 //Define the port to run on, from environment variables or a default
 const PORT = process.env.PORT || 3001;
