@@ -7,7 +7,7 @@ const {verifyToken, isAdmin, isResident} = require('../middleware/auth.middlewar
 
 router.post('/', [verifyToken, isResident], helpDeskController.createTicket);
 
-router.get('my-tickets', [verifyToken, isResident], helpDeskController.getMyTickets);
+router.get('/my-tickets', [verifyToken, isResident], helpDeskController.getMyTickets);
 
 router.get('/', [verifyToken, isAdmin], helpDeskController.getAllTickets);
 
