@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const apartmentController = require('../controllers/apartment.controller');
-const { verifyToken, isAdmin} = require('../middleware/auth.middleware');
+const { verifyToken, hasRole} = require('../middleware/auth.middleware');
 
-router.use(verifyToken, isAdmin);
+router.use(verifyToken, hasRole(['admin']));
 
 //Create a new Apartment
 router.post('/', apartmentController.createApartment);

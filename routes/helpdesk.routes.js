@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 const helpDeskController = require('../controllers/helpdesk.controller');
 
-const {verifyToken, isAdmin, isResident} = require('../middleware/auth.middleware');
+const {verifyToken, hasRole} = require('../middleware/auth.middleware');
 
 
-router.post('/', [verifyToken, isResident], helpDeskController.createTicket);
+router.post('/', [verifyToken, hasRole(['resident'])], helpDeskController.createTicket);
 
-router.get('/my-tickets', [verifyToken, isResident], helpDeskController.getMyTickets);
+router.get('/my-tickets', [verifyToken, hasRole(['resident'])], helpDeskController.getMyTickets);
 
-router.get('/', [verifyToken, isAdmin], helpDeskController.getAllTickets);
+router.get('/', [verifyToken, hasRole(['admin'])], helpDeskController.getAllTickets);
 
-router.put('/:ticketId', [verifyToken, isAdmin], helpDeskController.updateTicketStatus);
+router.put('/:ticketId', [verifyToken, hasRole(['admin'])], helpDeskController.updateTicketStatus);
 
 module.exports = router;

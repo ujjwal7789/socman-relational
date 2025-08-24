@@ -28,25 +28,45 @@ const verifyToken = (req, res, next) => {
   return next();
 };
 
-// Optional: Middleware to check for a specific role
-const isAdmin = (req, res, next) => {
-    if (req.user && req.user.role === 'admin') {
-        next();
-    } else {
-        res.status(403).json({ message: 'Access denied. Requires admin role.' });
+
+const hasRole = (roles) => { // roles will be an array, e.g., ['admin', 'security']
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ message: `Access denied. Requires one of the following roles: ${roles.join(', ')}` });
     }
+    next();
+  };
 };
 
-const isResident = (req, res, next) => {
-    if (req.user && req.user.role === 'resident') {
-        next();
-    } else {
-        res.status(403).json({ message: 'Access denied. Requires resident role.' });
-    }
-};
+// // Optional: Middleware to check for a specific role
+// const isAdmin = (req, res, next) => {
+//     if (req.user && req.user.role === 'admin') {
+//         next();
+//     } else {
+//         res.status(403).json({ message: 'Access denied. Requires admin role.' });
+//     }
+// };
+
+// const isSecurity = (req, res, next) => {
+//     if (req.user && req.user.role === 'security') {
+//         next();
+//     } else {
+//         res.status(403).json({ message: 'Access denied. Requires security role.' });
+//     }
+// };
+
+// const isResident = (req, res, next) => {
+//     if (req.user && req.user.role === 'resident') {
+//         next();
+//     } else {
+//         res.status(403).json({ message: 'Access denied. Requires resident role.' });
+//     }
+// };
 
 module.exports = {
     verifyToken,
-    isAdmin,
-    isResident
+    hasRole
+    // isAdmin,
+    // isResident,
+    // isSecurity
 };

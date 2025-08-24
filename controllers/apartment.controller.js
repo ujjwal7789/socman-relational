@@ -1,4 +1,4 @@
-const { EmptyResultError } = require('sequelize');
+
 const { Apartment, User } = require('../models');
 
 exports.createApartment = async (req, res) => {
