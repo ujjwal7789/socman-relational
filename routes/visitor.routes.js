@@ -11,5 +11,4 @@ router.put('/:visitorId/check-out', [verifyToken, hasRole(['admin', 'security'])
 
 router.put('/:visitorId/cancel', [verifyToken, hasRole(['resident'])], visitorController.cancelVisitor);
 
-
 module.exports = router;

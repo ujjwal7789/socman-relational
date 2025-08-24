@@ -126,22 +126,30 @@ exports.checkOutVisitor = async (req, res) => {
 };
 
 exports.cancelVisitor = async (req, res) => {
-    const visitorId = req.params;
-
     try {
+        const {visitorId} = req.params;
+        const visitor = await Visitor.findByPk(visitorId);
 
-    const visitor = Visitor.findByPk(visitorId);
+        if (!visitor) {
+            return res.status(404).json({message: 'Visitor not found'});
+        }
 
-    if (req.user.id === visitor.approved_by_resident) {
-        if (visitor.status === 'arrived') 
-            visitor.status = 'denied';
-        visitor.status = 'canceled'
-    } 
+        if (visitor.approved_by_resident !== req.user.id) {
+            return res.status(400).json({ message: `Cannot cancel visitor as you are not approver.`});
+        }
 
-    } catch (error) {   
+        if (visitor.status != 'expected') {
+            return res.status(400).json({ message: `Cannot cancel visitor. Current status is ${visitor.status}`});
+        }
+
+        visitor.status = 'denied';
+        await visitor.save();
+
+        res.status(200).json({message: 'Visitor canceled successfully. ', visitor: visitor});
+
+    } catch (error) {
         console.error(error);
-        return res.status(500).json({message: 'Visitor not found', error: error});
-    }   
+        res.status(500).json({message: 'Could not cancel visitor', error: error});
+    }
+};
 
-    visitor.save();
-}
