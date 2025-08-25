@@ -38,35 +38,26 @@ const hasRole = (roles) => { // roles will be an array, e.g., ['admin', 'securit
   };
 };
 
-// // Optional: Middleware to check for a specific role
-// const isAdmin = (req, res, next) => {
-//     if (req.user && req.user.role === 'admin') {
-//         next();
-//     } else {
-//         res.status(403).json({ message: 'Access denied. Requires admin role.' });
-//     }
-// };
+const protectView = (req, res, next) => {
+  const token = req.cookies.token;
 
-// const isSecurity = (req, res, next) => {
-//     if (req.user && req.user.role === 'security') {
-//         next();
-//     } else {
-//         res.status(403).json({ message: 'Access denied. Requires security role.' });
-//     }
-// };
+  if (!token) {
+    return res.redirect('/login');
+  }
 
-// const isResident = (req, res, next) => {
-//     if (req.user && req.user.role === 'resident') {
-//         next();
-//     } else {
-//         res.status(403).json({ message: 'Access denied. Requires resident role.' });
-//     }
-// };
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.locals.user = decoded;
+    next();
+  } catch (error) {
+    return res.redirect('/login');
+  }
+};
 
 module.exports = {
     verifyToken,
-    hasRole
-    // isAdmin,
-    // isResident,
-    // isSecurity
+    hasRole,
+    protectView
+    
 };

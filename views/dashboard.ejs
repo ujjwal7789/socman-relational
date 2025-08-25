@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+
+    <header>
+        <!-- Because we used res.locals.user, we can access the user's info directly! -->
+        <h1>Welcome, <%= user.name %>!</h1>
+        <p>Your Role: <strong><%= user.role %></strong></p>
+        <button onclick="logout()">Logout</button>
+    </header>
+
+    <hr>
+
+    <main>
+        <h2>Dashboard Menu</h2>
+        
+        <!-- EJS Conditional Logic -->
+        <% if (user.role === 'admin') { %>
+
+            <!-- Show this menu ONLY if the user is an Admin -->
+            <h3>Admin Menu</h3>
+            <ul>
+                <li><a href="/apartments">Manage Apartments</a></li>
+                <li><a href="/notices">Manage Notices</a></li>
+                <li><a href="/amenities">Manage Amenities</a></li>
+                <li><a href="/bookings">View All Bookings</a></li>
+                <li><a href="/helpdesk">View Help Desk Tickets</a></li>
+            </ul>
+
+        <% } else if (user.role === 'resident') { %>
+            
+            <!-- Show this menu ONLY if the user is a Resident -->
+            <h3>Resident Menu</h3>
+            <ul>
+                <li><a href="/notices">View Notices</a></li>
+                <li><a href="/helpdesk/my-tickets">My Help Desk Tickets</a></li>
+                <li><a href="/amenities/book">Book an Amenity</a></li>
+                <li><a href="/bookings/my-bookings">My Bookings</a></li>
+                <li><a href="/visitors">Manage Visitors</a></li>
+                <li><a href="/forum">Community Forum</a></li>
+            </ul>
+
+        <% } %>
+
+    </main>
+    
+    <!-- We need to include our new main.js file for the logout button to work -->
+    <script src="/js/main.js"></script>
+</body>
+</html>

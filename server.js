@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const {sequelize, connectDB} = require('./config/database');
@@ -32,6 +33,8 @@ app.get('/', (req, res) => {
     res.send('Society Management API is running!');
 });
 
+app.use(cookieParser());
+
 
 app.use('/', viewsRoutes)
 app.use('/api/auth', authRoutes);
@@ -48,4 +51,4 @@ const PORT = process.env.PORT || 3001;
 //Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-})
+});

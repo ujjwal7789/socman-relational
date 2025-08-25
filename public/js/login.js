@@ -33,8 +33,9 @@ try {
     if (response.ok) { // The request was successful (status code 200-299)
         // Save the token and user info in the browser's local storage
         localStorage.setItem('token', data.token);
+        
+        document.cookie = `token=${data.token}; path=/; max-age=86400;`
         localStorage.setItem('user', JSON.stringify(data.user));
-
         // Redirect the user to their dashboard (we will create this next)
         window.location.href = '/dashboard';
     } else {
