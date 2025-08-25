@@ -10,9 +10,15 @@ const helpDeskRoutes = require('./routes/helpdesk.routes');
 const apartmentRoutes = require('./routes/apartments.routes');
 const visitorRoutes = require('./routes/visitor.routes');
 const forumRoutes = require('./routes/forum.routes');
-const amenityRoutes = require('./routes/amenity.routes')
+const amenityRoutes = require('./routes/amenity.routes');
+const viewsRoutes = require('./routes/views.routes');
 
 const app = express();
+
+app.set('view engine', 'ejs');
+
+app.use(express.static('public'));
+
 
 //Middleware
 app.use(cors());
@@ -26,6 +32,8 @@ app.get('/', (req, res) => {
     res.send('Society Management API is running!');
 });
 
+
+app.use('/', viewsRoutes)
 app.use('/api/auth', authRoutes);
 app.use('/api/notices', noticeRoutes);
 app.use('/api/helpdesk', helpDeskRoutes);

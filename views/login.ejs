@@ -1,0 +1,32 @@
+<!-- views/login.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Management - Login</title>
+    <!-- We will add some simple styling later -->
+</head>
+<body>
+    <h1>Welcome! Please Log In</h1>
+
+    <form id="loginForm">
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <br>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <br>
+        <button type="submit">Log In</button>
+    </form>
+
+    <p id="errorMessage" style="color: red;"></p>
+
+    <!-- This script will handle the form submission -->
+    <script src="/js/login.js"></script>
+</body>
+</html>
