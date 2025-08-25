@@ -66,7 +66,7 @@ Booking.belongsTo(Amenity, { foreignKey: 'amenity_id', as: 'amenity' });
 Booking.belongsTo(User, { foreignKey: 'booked_by_user', as: 'resident' });
 
 // Forum Posts and Comments
-ForumPost.hasMany(ForumComment, { foreignKey: 'post_id', as: 'comments' });
+ForumPost.hasMany(ForumComment, { foreignKey: 'post_id', as: 'comments', onDelete: 'CASCADE' });
 ForumPost.belongsTo(User, { foreignKey: 'author_id', as: 'author' });
 ForumComment.belongsTo(ForumPost, { foreignKey: 'post_id', as: 'post' });
 ForumComment.belongsTo(User, { foreignKey: 'author_id', as: 'author' });

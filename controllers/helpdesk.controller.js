@@ -6,10 +6,10 @@ exports.createTicket = async (req, res) => {
 
     try {
         const ticket = await HelpDesk.create({
-            title,
-            description,
-            category,
-            raised_by: residentId,
+        title,
+        description,
+        category,
+        raised_by: residentId,
         });
 
         res.status(201).json({ message: 'Help desk ticket created successfully', ticket });
