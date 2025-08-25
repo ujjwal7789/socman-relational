@@ -1,6 +1,7 @@
 const { Amenity, Booking } = require('../models');
 const {Op} = require('sequelize');
 
+
 exports.createAmenity = async (req, res) => {
     try {
         const {name, description, booking_rules} = req.body;
@@ -95,5 +96,82 @@ exports.createBooking = async (req, res) => {
 
         console.error("Error creating booking", error);
         res.status(500).json( {message : 'An error occurred while creating the booking', error: error.message});
+    }
+};
+
+exports.getMyBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.findAll({
+            where: {
+                booked_by_user : req.user.id
+            },
+            include: {
+                model: Amenity,
+                as: 'amenity',
+                attributes: ['name']
+            },
+
+            order: [['start_time', 'ASC']]              
+            
+        });
+
+        res.status(200).json({ message: 'Got your bookings', bookings: bookings});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json( {message: 'Error occurred while getting your bookings'});
+    }
+};
+
+exports.getAllBookings = async (req, res) => {
+    try {
+        const allBookings = await Booking.findAll({
+            include: [{ 
+                model: Amenity,
+                as: 'amenity',
+                attributes: ['name']
+
+            },
+            
+            {
+                model: User,
+                as: 'resident',
+                attributes: ['name']
+            }
+            ],
+            
+            order: 
+                [['start_time', 'ASC']]
+        });
+
+        res.status(200).json(allBookings);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json( {message: 'Could not list all bookings', error: error.message});
+    }
+};
+
+exports.cancelBooking = async (req, res) => {
+    try {
+        const {bookingId} = req.params;
+        const bookingToCancel = await Booking.findByPk(bookingId);
+
+        if (!(bookingToCancel)) 
+            return res.status(404).json( {message: 'Booking was not found'});
+
+        if (!(bookingToCancel.booked_by_user === req.user.id || req.user.role === 'admin')) {   
+            return res.status(403).json({ message: 'No authorization to cancel booking. Are you the booker?'});
+        }
+
+        if (!( bookingToCancel.start_time > new Date())) {
+            return res.status(400).json({message: 'Cannot cancel a future booking'});
+        }
+
+        bookingToCancel.status = 'cancelled';
+        await bookingToCancel.save();
+
+        res.status(200).json({ message: 'Booking cancelled successfully', booking: bookingToCancel});
+
+    } catch (error) {
+        res.status(500).json({message: 'Error canceling booking', error: error.message});
     }
 };
