@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const noticeController = require('../controllers/notice.controller');
-const { verifyToken, isAdmin, hasRole } = require('../middleware/auth.middleware');
+const { verifyToken, hasRole } = require('../middleware/auth.middleware');
 
 // Route to get all notices
 // This route requires a user to be logged in (verifyToken)
