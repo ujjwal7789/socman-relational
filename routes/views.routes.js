@@ -22,4 +22,12 @@ router.get('/dashboard', protectView, (req, res) => {
     res.render('dashboard');
 });
 
+router.get('/apartments', protectView, (req, res) => {
+    if (res.locals.user.role !== 'admin') {
+        return res.status(403).send('Access Denied');
+    }
+
+    res.render('apartments');
+})
+
 module.exports = router;
