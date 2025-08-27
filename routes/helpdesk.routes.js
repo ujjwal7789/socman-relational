@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const helpDeskController = require('../controllers/helpdesk.controller');
 
+
 const {verifyToken, hasRole} = require('../middleware/auth.middleware');
 
 
@@ -11,7 +12,9 @@ router.get('/my-tickets', [verifyToken, hasRole(['resident'])], helpDeskControll
 
 router.get('/', [verifyToken, hasRole(['admin'])], helpDeskController.getAllTickets);
 
-router.put('/:ticketId', [verifyToken, hasRole(['admin'])], helpDeskController.updateTicket);
+router.put('/:ticketId', [verifyToken, hasRole(['admin', 'staff'])], helpDeskController.updateTicket);
+
+router.get('/assigned-to-me', [verifyToken, hasRole(['admin', 'staff'])], helpDeskController.getAssignedTickets);
 
 
 

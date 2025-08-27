@@ -100,3 +100,44 @@ exports.updateTicket = async (req, res) => {
         res.status(500).json({ message: 'Error updating ticket', error: error.message });
     }
 };
+
+exports.getAssignedTickets = async (req, res) => {
+    const staffId = req.user.id;
+
+    try {
+        const sreqs = await HelpDesk.findAll({
+            where: {assigned_to: staffId},
+            order: [['createdAt', 'ASC']], 
+            include: [{
+                model: User,
+                as: 'requester',
+                attributes: ['name'],
+                include: {
+                    model: Apartment,
+                    as: 'apartmentDetails',
+                    attributes: ['id', 'apartment_number']
+                }
+
+            }]
+
+        });
+
+        return res.status(200).json(sreqs);
+    } catch (error) {
+        res.status(500).json({message: 'Error loading service requests'});
+    }
+}
+
+exports.getMyTickets = async (req, res) => {
+  const residentId = req.user.id;
+
+  try {
+    const tickets = await HelpDesk.findAll({
+      where: { raised_by: residentId },
+      order: [['createdAt', 'DESC']],
+    });
+    res.status(200).json(tickets);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching your tickets', error: error.message });
+  }
+};

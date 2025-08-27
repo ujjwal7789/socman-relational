@@ -114,7 +114,6 @@ const updateTicketAssignment = (ticketId, newAssigneeId) => {
     updateTicket(ticketId, { assigned_to: assigneeId });
 };
 
-
 // --- Initial Load ---
 // We now need to run two functions when the page loads.
 // We must fetch the staff list FIRST, then fetch the tickets.

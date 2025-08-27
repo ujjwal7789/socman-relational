@@ -76,4 +76,13 @@ router.get('/helpdesk', protectView, (req, res) => {
     res.render('helpdesk-admin');
 });
 
+router.get('/helpdesk/assigned-to-me', protectView, (req, res) => {
+    const user = res.locals.user;
+
+    if (user.role !== 'admin' && user.role !== 'staff') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('assigned-tickets');
+});
+
 module.exports = router;
