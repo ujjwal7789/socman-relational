@@ -46,4 +46,11 @@ router.get('/amenities/book', protectView, (req, res) => {
     res.render('book-amenity');
 });
 
+router.get('/bookings/my-bookings', protectView, (req, res) => {
+    if (res.locals.user.role !== 'resident') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('my-bookings');
+});
+
 module.exports = router;

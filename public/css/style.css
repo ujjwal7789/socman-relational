@@ -7,10 +7,14 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --color-red-100: oklch(93.6% 0.032 17.717);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-red-700: oklch(50.5% 0.213 27.518);
+    --color-red-800: oklch(44.4% 0.177 26.899);
     --color-red-900: oklch(39.6% 0.141 25.723);
+    --color-green-100: oklch(96.2% 0.044 156.743);
+    --color-green-800: oklch(44.8% 0.119 151.328);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-indigo-500: oklch(58.5% 0.233 277.117);
     --color-indigo-600: oklch(51.1% 0.262 276.966);
@@ -254,6 +258,9 @@
   .grid {
     display: grid;
   }
+  .inline-flex {
+    display: inline-flex;
+  }
   .table {
     display: table;
   }
@@ -327,6 +334,9 @@
   .overflow-x-auto {
     overflow-x: auto;
   }
+  .rounded-full {
+    border-radius: calc(infinity * 1px);
+  }
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
@@ -350,8 +360,14 @@
   .bg-gray-100 {
     background-color: var(--color-gray-100);
   }
+  .bg-green-100 {
+    background-color: var(--color-green-100);
+  }
   .bg-indigo-600 {
     background-color: var(--color-indigo-600);
+  }
+  .bg-red-100 {
+    background-color: var(--color-red-100);
   }
   .bg-red-500 {
     background-color: var(--color-red-500);
@@ -367,6 +383,9 @@
   }
   .p-8 {
     padding: calc(var(--spacing) * 8);
+  }
+  .px-2 {
+    padding-inline: calc(var(--spacing) * 2);
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
@@ -425,6 +444,10 @@
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
+  .leading-5 {
+    --tw-leading: calc(var(--spacing) * 5);
+    line-height: calc(var(--spacing) * 5);
+  }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
@@ -462,6 +485,9 @@
   .text-gray-900 {
     color: var(--color-gray-900);
   }
+  .text-green-800 {
+    color: var(--color-green-800);
+  }
   .text-indigo-600 {
     color: var(--color-indigo-600);
   }
@@ -470,6 +496,9 @@
   }
   .text-red-600 {
     color: var(--color-red-600);
+  }
+  .text-red-800 {
+    color: var(--color-red-800);
   }
   .text-white {
     color: var(--color-white);
@@ -634,6 +663,10 @@
   inherits: false;
   initial-value: solid;
 }
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-font-weight {
   syntax: "*";
   inherits: false;
@@ -770,6 +803,7 @@
       --tw-space-y-reverse: 0;
       --tw-divide-y-reverse: 0;
       --tw-border-style: solid;
+      --tw-leading: initial;
       --tw-font-weight: initial;
       --tw-tracking: initial;
       --tw-shadow: 0 0 #0000;
