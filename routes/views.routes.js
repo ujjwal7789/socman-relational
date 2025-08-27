@@ -60,4 +60,20 @@ router.get('/bookings', protectView, (req, res) => {
     res.render('all-bookings');
 });
 
+router.get('/helpdesk/my-tickets', protectView, (req, res) => {
+    // Only residents should see this page
+    if (res.locals.user.role !== 'resident') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('my-tickets');
+});
+
+router.get('/helpdesk', protectView, (req, res) => {
+    // Only admins should see this page
+    if (res.locals.user.role !== 'admin') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('helpdesk-admin');
+});
+
 module.exports = router;

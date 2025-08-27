@@ -1,4 +1,4 @@
-const {HelpDesk, User} = require('../models');
+const {HelpDesk, Apartment, User} = require('../models');
 
 exports.createTicket = async (req, res) => {
     const { title, description, category } = req.body;
@@ -33,22 +33,57 @@ exports.getMyTickets = async (req, res) => {
 };
 
 // Admin: Get all tickets from all residents
-exports.getAllTickets = async (req, res) => {
-    const residentId = req.user.id;
+// exports.getAllTickets = async (req, res) => {
+//     const residentId = req.user.id;
 
+//     try {
+//         const tickets = await HelpDesk.findAll({
+//             order: [['createdAt', 'DESC']],
+//             include: [{
+//                 model: User,
+//                 as: 'requester',
+//                 attributes: [ 'name', 'email'],
+            
+
+//                 include: {
+//                         model: Apartment,
+//                         as: 'apartmentDetails', // Use the alias from models/index.js
+//                         attributes: ['apartment_number']
+//                 }
+//             }],
+//         });
+
+//         res.status(200).json(tickets);
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error fetching all tickets', error : error.message});
+//     }
+// };
+
+exports.getAllTickets = async (req, res) => {
+    console.log('--- Admin is requesting all help desk tickets ---');
     try {
         const tickets = await HelpDesk.findAll({
             order: [['createdAt', 'DESC']],
-            include: {
+            include: [{
                 model: User,
                 as: 'requester',
-                attributes: [ 'name', 'email'],
-            },
+                attributes: ['id', 'name', 'email'], // Temporarily include 'id' for debugging
+                include: {
+                    model: Apartment,
+                    as: 'apartmentDetails',
+                    attributes: ['id', 'apartment_number'] // Temporarily include 'id'
+                }
+            }],
         });
-
         res.status(200).json(tickets);
+        
+
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching all tickets', error : error.message});
+        // If an error happens, we will see it here.
+        console.error('--- CRITICAL ERROR in getAllTickets ---');
+        console.error(error);
+        console.error('-------------------------------------');
+        res.status(500).json({ message: 'Error fetching all tickets', error: error.message });
     }
 };
 
