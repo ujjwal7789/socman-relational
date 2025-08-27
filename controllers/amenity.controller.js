@@ -36,7 +36,7 @@ exports.getAllAmenities = async (req, res) => {
 exports.createBooking = async (req, res) => {
     try {
 
-        const amenity_id = req.params.amenityId;
+        const {amenityId} = req.params;
         const { start_time, end_time } = req.body;
         const booked_by_user = req.user.id; 
 
@@ -52,7 +52,8 @@ exports.createBooking = async (req, res) => {
 
        const conflictingBooking = await Booking.findOne({ // Query the Booking model
             where: {
-                amenity_id: amenityId, // Check for the same amenity
+                amenity_id: amenityId,
+                status: 'confirmed', // Check for the same amenity
                 // The core overlap logic:
                 [Op.or]: [ // Find where either of these conditions are true
                     { // Condition A: An existing booking starts during the new booking

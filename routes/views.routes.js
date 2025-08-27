@@ -28,6 +28,22 @@ router.get('/apartments', protectView, (req, res) => {
     }
 
     res.render('apartments');
-})
+});
+
+router.get('/amenities', protectView, (req, res) => {
+    // Only admins can access this page
+    if (res.locals.user.role !== 'admin') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('amenities');
+});
+
+router.get('/amenities/book', protectView, (req, res) => {
+    // Only residents can access this page
+    if (res.locals.user.role !== 'resident') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('book-amenity');
+});
 
 module.exports = router;
