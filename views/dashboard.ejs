@@ -22,10 +22,19 @@
                 <h3 class="font-bold text-lg text-gray-800">Manage Apartments</h3>
                 <p class="text-gray-600 text-sm mt-1">Create, view, and assign residents.</p>
             </a>
+            
             <a href="/amenities" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200">
                 <h3 class="font-bold text-lg text-gray-800">Manage Amenities</h3>
                 <p class="text-gray-600 text-sm mt-1">Add or remove bookable facilities.</p>
             </a>
+            
+            <a href="/bookings" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200">
+                <h3 class="font-bold text-lg text-gray-800">View All Bookings</h3>
+                <p class="text-gray-600 text-sm mt-1">Monitor and manage all reservations.</p>
+            </a>
+
+            
+
             <!-- Add more admin cards here -->
 
         <% } else if (user.role === 'resident') { %>

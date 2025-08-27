@@ -53,4 +53,11 @@ router.get('/bookings/my-bookings', protectView, (req, res) => {
     res.render('my-bookings');
 });
 
+router.get('/bookings', protectView, (req, res) => {
+    if (res.locals.user.role !== 'admin') {
+        return res.status(403).send('Access Denied!');
+    }
+    res.render('all-bookings');
+});
+
 module.exports = router;
