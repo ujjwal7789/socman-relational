@@ -11,7 +11,7 @@ router.get('/my-tickets', [verifyToken, hasRole(['resident'])], helpDeskControll
 
 router.get('/', [verifyToken, hasRole(['admin'])], helpDeskController.getAllTickets);
 
-router.put('/:ticketId', [verifyToken, hasRole(['admin'])], helpDeskController.updateTicketStatus);
+router.put('/:ticketId', [verifyToken, hasRole(['admin'])], helpDeskController.updateTicket);
 
 
 

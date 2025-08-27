@@ -32,33 +32,6 @@ exports.getMyTickets = async (req, res) => {
   }
 };
 
-// Admin: Get all tickets from all residents
-// exports.getAllTickets = async (req, res) => {
-//     const residentId = req.user.id;
-
-//     try {
-//         const tickets = await HelpDesk.findAll({
-//             order: [['createdAt', 'DESC']],
-//             include: [{
-//                 model: User,
-//                 as: 'requester',
-//                 attributes: [ 'name', 'email'],
-            
-
-//                 include: {
-//                         model: Apartment,
-//                         as: 'apartmentDetails', // Use the alias from models/index.js
-//                         attributes: ['apartment_number']
-//                 }
-//             }],
-//         });
-
-//         res.status(200).json(tickets);
-//     } catch (error) {
-//         res.status(500).json({ message: 'Error fetching all tickets', error : error.message});
-//     }
-// };
-
 exports.getAllTickets = async (req, res) => {
     console.log('--- Admin is requesting all help desk tickets ---');
     try {
@@ -88,22 +61,39 @@ exports.getAllTickets = async (req, res) => {
 };
 
 // Admin: Update the status of a specific ticket
-exports.updateTicketStatus = async (req, res) => {
-    const {ticketId} = req.params; //Get the ID from the URL (e.g., /api/helpdesk/15)
-    const { status, assigned_to } = req.body;
-
+exports.updateTicket = async (req, res) => {
     try {
+        const { ticketId } = req.params;
+        const { status, assigned_to } = req.body;
+
         const ticket = await HelpDesk.findByPk(ticketId);
         if (!ticket) {
-            return res.status(404).json({ message: 'Ticket not found'});
+            return res.status(404).json({ message: 'Ticket not found' });
         }
 
-        //Update the ticket fields
-        ticket.status = status || ticket.status; // only update if a new status is provided
+        // --- NEW VALIDATION BLOCK ---
+        // If the request is trying to assign a user...
+        if (assigned_to) {
+            const userToAssign = await User.findByPk(assigned_to);
 
-        ticket.assigned_to = assigned_to || ticket.assigned_to;
+            // Check 1: Does this user even exist?
+            if (!userToAssign) {
+                return res.status(404).json({ message: `User with ID ${assigned_to} not found.` });
+            }
+            // Check 2: Does this user have the correct role?
+            if (userToAssign.role !== 'admin' && userToAssign.role !== 'staff') {
+                return res.status(403).json({ message: `Cannot assign ticket to user with role '${userToAssign.role}'.` });
+            }
+            // If all checks pass, it's safe to assign.
+            ticket.assigned_to = assigned_to;
+        }
 
-        await ticket.save(); // save the change to database
+        // Update status if it was provided
+        if (status) {
+            ticket.status = status;
+        }
+
+        await ticket.save();
 
         res.status(200).json({ message: 'Ticket updated successfully', ticket });
     } catch (error) {

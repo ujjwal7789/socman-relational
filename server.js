@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+
 require('dotenv').config();
 
 const {sequelize, connectDB} = require('./config/database');
@@ -13,6 +14,8 @@ const visitorRoutes = require('./routes/visitor.routes');
 const forumRoutes = require('./routes/forum.routes');
 const amenityRoutes = require('./routes/amenity.routes');
 const viewsRoutes = require('./routes/views.routes');
+const userRoutes = require('./routes/user.routes');
+
 
 const app = express();
 
@@ -44,6 +47,7 @@ app.use('/api/apartments', apartmentRoutes);
 app.use('/api/visitors', visitorRoutes);
 app.use('api/forum', forumRoutes);
 app.use('/api/amenities', amenityRoutes);
+app.use('/api/users', userRoutes);
 
 //Define the port to run on, from environment variables or a default
 const PORT = process.env.PORT || 3001;
