@@ -119,22 +119,36 @@ exports.addCommentToPost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
     try {
-        const {postId} = req.params;
-        
+        const { postId } = req.params;
+        const loggedInUserId = req.user.id; // Get the current user's ID
+        const loggedInUserRole = req.user.role; // Get the current user's role
+
         const post = await ForumPost.findByPk(postId);
 
         if (!post) {
-            return res.status(404).json({ message: 'Could not find post'});
+            return res.status(404).json({ message: 'Post not found' });
         }
 
-        if (!(req.user.role === 'admin' || post.author_id === req.user.id)) {
-            return res.status(403).json( {message : 'You are not authorized to delete this post'});
+        // --- ROBUST AUTHORIZATION CHECK ---
+        // Let's check the conditions separately for clarity.
+        const isAdmin = loggedInUserRole === 'admin';
+        // Use non-strict '==' to avoid potential string vs. number issues.
+        const isAuthor = post.author_id == loggedInUserId; 
+
+        if (!isAdmin && !isAuthor) {
+            // If the user is neither an admin NOR the author, deny access.
+            return res.status(403).json({ message: 'You are not authorized to delete this post' });
         }
 
-        res.status(200).json( {message: 'Post was deleted successfully', post: post});
+        // If we get here, the user has permission.
+        await post.destroy();
+
+        // Send back the data of the post that was just deleted.
+        res.status(200).json({ message: 'Post deleted successfully', post: post });
+
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Post could not be deleted', error: error});
+        console.error("Error deleting post:", error);
+        res.status(500).json({ message: 'An error occurred while deleting the post' });
     }
 };
 
