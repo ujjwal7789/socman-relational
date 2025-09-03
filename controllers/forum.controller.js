@@ -3,23 +3,38 @@
 const { User, ForumPost, ForumComment } = require('../models');
 
 exports.createPost = async (req, res) => {
-    const { title, content } = req.body;
-    const author_id = req.user.id;
-
     try {
-        const forumPost = await ForumPost.create({
-        title,
-        content,
-        author_id: author_id,
+        const { title, content } = req.body;
+        const author_id = req.user.id;
+
+        // This is the line that actually saves to the database
+        const newPost = await ForumPost.create({
+            title,
+            content,
+            author_id: author_id,
         });
 
-        res.status(201).json( {message: 'Your post was posted to the forum.', forumPost});
+        console.log('--- Post successfully CREATED in database ---', newPost.toJSON());
+        res.status(201).json({ message: 'Post created successfully!', post: newPost });
+
     } catch (error) {
-        res.status(500).json( {message: 'Error creating Post', error: error.message});
+        console.error("Error creating post:", error);
+        res.status(500).json({ message: 'An error occurred while creating the post.' });
     }
 };
 
+// exports.createPost = async (req, res) => {
+//     console.log('--- REAL createPost controller function was hit ---');
+//     console.log('Request Body:', req.body); // Let's see what we received
+
+//     // We won't even touch the database. We'll just send a success message.
+//     res.status(201).json({ message: 'createPost controller function is working.' });
+// };
+
+// in controllers/forum.controller.js
+
 exports.getAllPosts = async (req, res) => {
+    console.log('--- getAllPosts controller function was HIT ---'); // You can keep this for now
     try {
         const allPosts = await ForumPost.findAll({
             order: [['createdAt', 'DESC']],
@@ -29,9 +44,11 @@ exports.getAllPosts = async (req, res) => {
                 attributes: ['name'],
             },
         });
-        
+        // Let's log what the database returns
+        console.log(`Found ${allPosts.length} posts in the database.`); 
         res.status(200).json(allPosts);
     } catch (error) {
+        console.error("Error in getAllPosts:", error);
         res.status(500).json({ message: 'Error loading posts'});
     }
 };
@@ -73,28 +90,30 @@ exports.getPostById = async (req, res) => {
 }; 
 
 exports.addCommentToPost = async (req, res) => {
-
-
     try {
-    const {postId} = req.params;
-    const {comment_text} = req.body;
-    const author_id = req.user.id;
+        const { postId } = req.params;
+        const { comment_text } = req.body;
+        const author_id = req.user.id;
 
-    const postExists = await ForumPost.findByPk(postId);
+        const postExists = await ForumPost.findByPk(postId);
 
-    if (!postExists)
-        return res.status(404).json({message: `Didn't find post.`, });
+        if (!postExists) {
+            return res.status(404).json({ message: "Post not found. Cannot add comment." });
+        }
+
+        // --- THE FIX ---
+        // Change 'newComment_id' to the correct column name: 'post_id'
         const newComment = await ForumComment.create({
-            comment_text,
-newComment_id: postId,
+            comment_text: comment_text,
+            post_id: postId, 
             author_id: author_id
         });
 
-    res.status(201).json({message: 'Comment added successfully', forumComment: newComment});
+        res.status(201).json({ message: 'Comment added successfully', comment: newComment });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({message: 'Could not comment on the post', error: error});
+        console.error("Error adding comment:", error); // It's good practice to use console.error for errors
+        res.status(500).json({ message: 'An error occurred while adding the comment', error: error.message });
     }
 };
 

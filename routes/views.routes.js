@@ -105,4 +105,19 @@ router.get('/manage-notices', protectView, (req, res) => {
     res.render('manage-notices')
 });
 
+router.get('/forum', protectView, (req, res) => {
+    res.render('forum');
+});
+
+router.get('/forum/posts/:postId', protectView, (req, res) => {
+    res.render('post-detail');
+});
+
+router.get('/forum/new', protectView, (req, res) => {
+    if (res.locals.user.role !== 'resident') {
+        return res.status(403).send('Only residents can create posts.')
+    }
+    res.render('new-post');
+});
+
 module.exports = router;

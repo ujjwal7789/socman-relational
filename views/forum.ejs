@@ -1,0 +1,19 @@
+<%- include('partials/header', { title: 'Community Forum' }) %>
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-700 mb-2 sm:mb-0">Community Posts</h1>
+
+         <div>
+            <a href="/dashboard" class="text-blue-600 hover:underline mr-4">Back to Dashboard</a>
+            <button onclick="logout()"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition duration-200">Logout</button>
+        </div>
+    </header>
+
+    <main>
+        <a href="/forum/new"><button class="w-full bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded-md transition duration-200">Create New Post</button></a>
+        <div id="postsContainer"></div>
+    </main>
+
+<script src="/js/forum.js"></script>
+
+<%- include('partials/footer') %>

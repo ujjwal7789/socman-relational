@@ -1,0 +1,33 @@
+<%- include('partials/header', { title: 'Create New Post' }) %>
+
+<header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-700 mb-2 sm:mb-0">Create a New Forum Post</h1>
+    <div>
+        <a href="/forum" class="text-blue-600 hover:underline mr-4">Back to Forum</a>
+        <button onclick="logout()"
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition duration-200">Logout</button>
+    </div>
+</header>
+
+<main class="bg-white p-6 rounded-lg shadow-lg">
+    <!-- FIX 1: Gave the form a clearer ID -->
+    <form id="newPostForm" class="space-y-4">
+        <div>
+            <label for="title" class="block text-sm font-medium text-gray-700">Post Title</label>
+            <!-- FIX 1: Corrected the classes on the input to match the textarea -->
+            <input type="text" id="title" name="title" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required>
+        </div>
+        <div>
+            <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+            <textarea id="content" name="content" rows="10" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required></textarea>
+        </div>
+        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded-md transition duration-200">Submit Post</button>
+    </form>
+    <p id="formMessage" class="mt-4 text-sm font-medium"></p>
+</main>
+
+<!-- We also need the script to power this page -->
+<script src="/js/new-post.js"></script>
+
+<!-- FIX 2: Corrected the syntax for the footer include -->
+<%- include('partials/footer') %>
