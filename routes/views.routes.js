@@ -7,6 +7,10 @@ const { protectView} = require('../middleware/auth.middleware');
 // Route to show the login page
 // A GET request to http://localhost:3001/login will run this
 
+router.get('/register', (req, res) => {
+    res.render('register');
+});
+
 router.get('/', (req, res) => {
     res.redirect('/login');
 });
@@ -83,6 +87,22 @@ router.get('/helpdesk/assigned-to-me', protectView, (req, res) => {
         return res.status(403).send('Access Denied');
     }
     res.render('assigned-tickets');
+});
+
+router.get('/notices', protectView, (req, res) => {
+    return res.render('notices');
+
+    
+});
+
+router.get('/manage-notices', protectView, (req, res) => {
+    const user = res.locals.user;
+
+    if (!(user.role === 'admin')) {
+        return res.status(403).send('Access Denied');
+    }
+
+    res.render('manage-notices')
 });
 
 module.exports = router;
