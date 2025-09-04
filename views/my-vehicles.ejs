@@ -1,0 +1,65 @@
+<!-- views/my-vehicles.ejs -->
+
+<%- include('partials/header', { title: 'My Vehicles' }) %>
+
+<header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-700 mb-2 sm:mb-0">Manage My Vehicles</h1>
+    <div>
+        <a href="/dashboard" class="text-blue-600 hover:underline mr-4">Back to Dashboard</a>
+        <button onclick="logout()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md transition duration-200">Logout</button>
+    </div>
+</header>
+
+<main class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+    <!-- Left Column: The Form -->
+    <div class="md:col-span-1 bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-4 border-b pb-2">Register a New Vehicle</h3>
+        <form id="createVehicleForm" class="space-y-4">
+            <div>
+                <label for="vehicle_number" class="block text-sm font-medium text-gray-600">Vehicle Number (e.g., MH 12 AB 3456)</label>
+                <input type="text" id="vehicle_number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm uppercase" required>
+            </div>
+            <div>
+                <label for="vehicle_type" class="block text-sm font-medium text-gray-600">Vehicle Type</label>
+                <select id="vehicle_type" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm" required>
+                    <option value="two_wheeler">Two-Wheeler</option>
+                    <option value="four_wheeler">Four-Wheeler</option>
+                </select>
+            </div>
+            <div>
+                <label for="model" class="block text-sm font-medium text-gray-600">Make / Model (e.g., Honda Activa)</label>
+                <input type="text" id="model" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded-md transition duration-200">Register Vehicle</button>
+        </form>
+        <p id="formMessage" class="mt-4 text-sm font-medium"></p>
+    </div>
+
+    <!-- Right Column: The Table -->
+    <div class="md:col-span-2 bg-white p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-4 border-b pb-2">My Registered Vehicles</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vehicle Number</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Model</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="vehiclesTableBody" class="bg-white divide-y divide-gray-200">
+                    <!-- JavaScript will inject vehicles here -->
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">Loading your vehicles...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script src="/js/my-vehicles.js"></script>
+
+<%- include('partials/footer') %>

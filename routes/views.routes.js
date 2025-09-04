@@ -120,4 +120,12 @@ router.get('/forum/new', protectView, (req, res) => {
     res.render('new-post');
 });
 
+router.get('/my-vehicles', protectView, (req, res) => {
+    // Only residents should see this page
+    if (res.locals.user.role !== 'resident') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('my-vehicles');
+});
+
 module.exports = router;

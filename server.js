@@ -16,6 +16,7 @@ const apartmentRoutes = require('./routes/apartments.routes');
 const visitorRoutes = require('./routes/visitor.routes');
 const forumRoutes = require('./routes/forum.routes');
 const amenityRoutes = require('./routes/amenity.routes');
+const vehicleRoutes = require('./routes/vehicle.routes')
 // const userRoutes = require('./routes/user.routes'); // For the staff list
 const viewsRoutes = require('./routes/views.routes');
 
@@ -48,6 +49,7 @@ app.use('/api/apartments', apartmentRoutes);
 app.use('/api/visitors', visitorRoutes);
 app.use('/api/forum', forumRoutes);
 app.use('/api/amenities', amenityRoutes);
+app.use('/api/vehicles', vehicleRoutes);
 // app.use('/api/users', userRoutes);
 
 // --- View Routes (More Generic, should come LAST) ---

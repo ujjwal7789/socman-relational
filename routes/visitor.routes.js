@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const visitorController = require('../controllers/visitor.controller');
-const {verifyToken, isResident, isAdmin, isSecurity, hasRole} = require('../middleware/auth.middleware');
+const {verifyToken, hasRole} = require('../middleware/auth.middleware');
 
 router.post('/', [verifyToken, hasRole(['resident'])], visitorController.createVisitor);
 
