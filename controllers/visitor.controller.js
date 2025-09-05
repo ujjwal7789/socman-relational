@@ -1,4 +1,5 @@
-const {Visitor, User} = require('../models');
+const {Visitor, User, Apartment} = require('../models');
+const {Op} = require('sequelize');
 
 exports.createVisitor = async (req, res) => {
     const { visitor_name, visitor_phone } = req.body;
@@ -150,6 +151,32 @@ exports.cancelVisitor = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({message: 'Could not cancel visitor', error: error});
+    }
+};
+
+exports.getGateLog = async (req, res) => {
+    try {
+        const visitors = await Visitor.findAll({
+            where: {
+                status: {
+                    [Op.or]: ['expected', 'arrived']
+                }
+            },
+            order: [['createdAt', 'ASC']], // Show oldest expected visitors first
+            include: {
+                model: User,
+                as: 'resident',
+                attributes: ['name'],
+                include: { // Nested include for apartment number
+                    model: Apartment,
+                    as: 'apartmentDetails',
+                    attributes: ['apartment_number']
+                }
+            }
+        });
+        res.status(200).json(visitors);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching gate log', error: error.message });
     }
 };
 

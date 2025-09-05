@@ -128,4 +128,21 @@ router.get('/my-vehicles', protectView, (req, res) => {
     res.render('my-vehicles');
 });
 
+router.get('/my-visitors', protectView, (req, res) => {
+    // Only residents should see this page
+    if (res.locals.user.role !== 'resident') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('my-visitors');
+});
+
+router.get('/gatekeeper', protectView, (req, res) => {
+    const user = res.locals.user;
+    // Only admins and security should see this page
+    if (user.role !== 'admin' && user.role !== 'security') {
+        return res.status(403).send('Access Denied');
+    }
+    res.render('gatekeeper');
+});
+
 module.exports = router;

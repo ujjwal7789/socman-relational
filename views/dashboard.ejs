@@ -67,6 +67,11 @@
                 <p class="text-gray-600 text-sm mt-1">Register and manage your vehicles.</p>
             </a>
 
+            <a href="/my-visitors" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200">
+                <h3 class="font-bold text-lg text-gray-800">My Visitors</h3>
+                <p class="text-gray-600 text-sm mt-1">Pre-approve guests and deliveries.</p>
+            </a>
+
 
             <!-- Add more resident cards here -->
         <% } %>
@@ -82,7 +87,15 @@
         <a href="/notices" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200">
                 <h3 class="font-bold text-lg text-gray-800">Notices</h3>
                 <p class="text-gray-600 text-sm mt-1">View the society notice board.</p>
-            </a>
+        </a>
+
+        <% if (user.role === 'admin' || user.role === 'security') { %>
+    <!-- Card for Gatekeeper UI -->
+        <a href="/gatekeeper" class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200">
+            <h3 class="font-bold text-lg text-gray-800">Gatekeeper Log</h3>
+            <p class="text-gray-600 text-sm mt-1">Manage visitor check-ins and check-outs.</p>
+        </a>
+        <% } %>
 
     </div>
 </main>
